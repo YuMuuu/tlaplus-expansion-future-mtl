@@ -1,0 +1,3 @@
+state_transition.toolbox/
+**/tla2tools.jar
+**.cfg
