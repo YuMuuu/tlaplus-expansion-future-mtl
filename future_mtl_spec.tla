@@ -48,4 +48,23 @@ Prop_FI_From_Boundary_Neg == [](t = MaxT - 1 => ~F_I(From(2), From2True, t, MaxT
 Prop_UI_Pos == [](t <= 3 => U_I(Closed(0,3), PhiU, PsiU, t, MaxT))
 Prop_UI_Neg == [](t = 0 => ~U_I(Closed(0,2), PhiU, PsiU, t, MaxT))
 
+\* untilAt の性質                                                             *)
+\* k=3 で PsiU が発生、直前の 0..2 区間は PhiU が連続で真 → 成立
+Prop_UA_k3_Pos == [](t = 0 => UntilAt(3, PhiU, PsiU, t, MaxT))
+
+\* k=2 では PsiU が現れない → 不成立
+Prop_UA_k2_Neg == [](t = 0 => ~UntilAt(2, PhiU, PsiU, t, MaxT))
+
+\* t を 1 だけ進めると、k=3 における PsiU は (t+3)=4 で偽、かつ PhiU 連続性も崩れる → 不成立
+Prop_UA_k3_Neg_Shift == [](t = 1 => ~UntilAt(3, PhiU, PsiU, t, MaxT))
+
+\* 範囲外ガード: t=MaxT ではいかなる k>=1 も範囲外 → 不成立
+Prop_UA_OutOfRange_Neg == [](t = MaxT => ~UntilAt(1, PhiU, PsiU, t, MaxT))
+
+\* U_I([0,3]) と「k=0..3 のいずれかで untilAt 成立」の同値性
+Prop_UA_Equiv_UI == [](
+  U_I(Closed(0,3), PhiU, PsiU, t, MaxT)
+  <=> (\E k \in 0..3: UntilAt(k, PhiU, PsiU, t, MaxT))
+)
+
 =============================================================================
